@@ -18,7 +18,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 public class MainActivity extends AppCompatActivity {
-
+    final static String cjsServerIp = "192.168.1.26";
+    final static String raulsServerIp = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
         //notice the http:// prefix. necessary
-        String ip = "http://192.168.1.26:8080";
+        String ip = "http://" + cjsServerIp + ":8080";
 
         StringRequest request = new StringRequest(Request.Method.GET,ip,new Response.Listener<String>(){
             @Override

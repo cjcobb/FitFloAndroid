@@ -1,0 +1,4 @@
+Initial development of front end
+
+All this does right now is send a request to the fitflo server when you press the button
+It should just say hello fitflo
