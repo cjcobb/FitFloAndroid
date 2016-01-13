@@ -13,16 +13,36 @@
     tools:context="com.fitflo.fitflo.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/send_http"
-        android:id="@+id/sendHttpReqButton"
-        android:onClick="sendRootHttpRequest" />
+        android:layout_gravity="center_horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/send_root"
+            android:id="@+id/sendRoot"
+            android:onClick="sendRootRequest" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/send_getAllEvents"
+            android:id="@+id/sendGetAllEvents"
+            android:onClick="sendGetAllEventsRequest" />
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/response_placeholder"
-        android:id="@+id/responseText" />
+        android:id="@+id/rootResponseText" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchResultsList"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>

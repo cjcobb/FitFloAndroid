@@ -1,25 +1,38 @@
 package com.fitflo.fitflo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     final static String cjsServerIp = "192.168.1.26";
     final static String raulsServerIp = null;
+
+    private ArrayAdapter<String> mSearchResultsAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +48,35 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
+
+        mSearchResultsAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,new ArrayList<String>());
+        ListView listView = (ListView) findViewById(R.id.searchResultsList);
+        listView.setAdapter(mSearchResultsAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //this is how we start new activities
+
+                //first create an intent, first arg is context, second is class
+                Intent intent = new Intent(MainActivity.this, EventDetailsActivity.class);
+
+
+
+               /* //add a key value to intent, way to pass messages
+                //EXTRA_MESSAGE is static string at top of file
+                intent.putExtra(EXTRA_MESSAGE, message);
+                if(message.equals("")) {
+                    intent.putExtra(EXTRA_MESSAGE, msg);
+                }*/
+                //start the activity, using the intent
+                startActivity(intent);
+            }
+        });
+
+
     }
 
     @Override
@@ -61,13 +103,9 @@ public class MainActivity extends AppCompatActivity {
 
     //uses Volley. check out build.gradle (module: app) to compile
     //also, notice the permission added in AndroidManifest.xml
-    public void sendRootHttpRequest(View view) {
-
-        final TextView textView = (TextView) findViewById(R.id.responseText);
-
-
+    public void sendRootRequest(View view) {
+        final TextView textView = (TextView) findViewById(R.id.rootResponseText);
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-
         //notice the http:// prefix. necessary
         String ip = "http://" + cjsServerIp + ":8080";
 
@@ -76,16 +114,39 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 textView.setText("Received : " + response);
             }
-
-
         },new Response.ErrorListener() {
-
             @Override
             public void onErrorResponse(VolleyError error) {
                 textView.setText("sorry, error!"+error);
             }
         });
-
         requestQueue.add(request);
     }
+
+    public void sendGetAllEventsRequest(View view) {
+        mSearchResultsAdapter.add("clicked");
+        mSearchResultsAdapter.notifyDataSetChanged();
+
+        /*RequestQueue requestQueue = Volley.newRequestQueue(this);
+        //notice the http:// prefix. necessary
+        String ip = "http://" + cjsServerIp + ":8080/getAllEvents";
+
+        JsonArrayRequest request = new JsonArrayRequest(ip,new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                for(int i = 0; i < response.length();i++) {
+                    mSearchResultsAdapter.add(response.opt(i).toString());
+                }
+                mSearchResultsAdapter.notifyDataSetChanged();
+            }
+        },new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        requestQueue.add(request);*/
+    }
+
 }
