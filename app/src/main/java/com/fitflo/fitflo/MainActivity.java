@@ -50,11 +50,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
+        //adpater is how a view keeps in sync with datastructure
         mSearchResultsAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,new ArrayList<String>());
         ListView listView = (ListView) findViewById(R.id.searchResultsList);
         listView.setAdapter(mSearchResultsAdapter);
 
+        //listener for list items. bring up event details activity
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -123,6 +124,9 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
+
+    //for now, this function simply adds an item to the list
+    //however, the commented out code shows how to actually get all events
     public void sendGetAllEventsRequest(View view) {
         mSearchResultsAdapter.add("clicked");
         mSearchResultsAdapter.notifyDataSetChanged();
