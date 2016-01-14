@@ -1,4 +1,16 @@
 Initial development of front end
 
-All this does right now is send a request to the fitflo server when you press the button
-It should just say hello fitflo
+Has functionality to show all events in database, as well as add an event to database
+there was a bug where events were added up to three times. should be fixed, but not totally certain
+
+TODO:
+Login Screen
+- send password securely
+Register User Screen
+- send password securely
+Search
+- not sure how to do this (search based on instructor name and title?)
+Date and Time
+- (mobile) create Event needs good date and time ui
+- (server) remove events from db once date/time passes
+- develop protocol for date/time format
