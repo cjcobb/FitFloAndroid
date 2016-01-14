@@ -5,4 +5,5 @@
     <string name="send_getAllEvents">Send Get All Events Request</string>
     <string name="response_placeholder">Http Response will go here</string>
     <string name="title_activity_event_details">EventDetailsActivity</string>
+    <string name="title_activity_create_event">CreateEventActivity</string>
 </resources>

@@ -25,12 +25,16 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.jar.JarException;
 
 public class MainActivity extends AppCompatActivity {
     final static String cjsServerIp = "192.168.1.26";
     final static String raulsServerIp = null;
+    static RequestQueue requestQueue = null;
 
     private ArrayAdapter<String> mSearchResultsAdapter;
     @Override
@@ -49,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        requestQueue = Volley.newRequestQueue(this);
 
         //adpater is how a view keeps in sync with datastructure
         mSearchResultsAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,new ArrayList<String>());
@@ -92,11 +97,15 @@ public class MainActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+
+        switch(item.getItemId()) {
+            case R.id.action_settings:
+                return true;
+            case R.id.create_event:
+                Intent intent = new Intent(this,CreateEventActivity.class);
+                startActivity(intent);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -106,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
     //also, notice the permission added in AndroidManifest.xml
     public void sendRootRequest(View view) {
         final TextView textView = (TextView) findViewById(R.id.rootResponseText);
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
         //notice the http:// prefix. necessary
         String ip = "http://" + cjsServerIp + ":8080";
 
@@ -128,29 +137,45 @@ public class MainActivity extends AppCompatActivity {
     //for now, this function simply adds an item to the list
     //however, the commented out code shows how to actually get all events
     public void sendGetAllEventsRequest(View view) {
-        mSearchResultsAdapter.add("clicked");
-        mSearchResultsAdapter.notifyDataSetChanged();
+        Log.d("hey","got inside");
+       /* mSearchResultsAdapter.add("clicked");
+        mSearchResultsAdapter.notifyDataSetChanged();*/
 
-        /*RequestQueue requestQueue = Volley.newRequestQueue(this);
+
         //notice the http:// prefix. necessary
         String ip = "http://" + cjsServerIp + ":8080/getAllEvents";
 
         JsonArrayRequest request = new JsonArrayRequest(ip,new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
+                mSearchResultsAdapter.clear();
                 for(int i = 0; i < response.length();i++) {
-                    mSearchResultsAdapter.add(response.opt(i).toString());
+                    try {
+                        JSONObject jObj = response.getJSONObject(i);
+                        String title = jObj.getString("title");
+                        String instructor = jObj.getString("instructor");
+                        double price = jObj.getDouble("price");
+                        mSearchResultsAdapter.add(title + ", " + instructor + ", " + price + " dollars");
+                    } catch(JSONException exc) {
+                        mSearchResultsAdapter.add("error");
+                    }
+
+
+
                 }
                 mSearchResultsAdapter.notifyDataSetChanged();
             }
         },new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                mSearchResultsAdapter.clear();
+                mSearchResultsAdapter.add(error.toString());
+                mSearchResultsAdapter.notifyDataSetChanged();
 
             }
         });
 
-        requestQueue.add(request);*/
+        requestQueue.add(request);
     }
 
 }
