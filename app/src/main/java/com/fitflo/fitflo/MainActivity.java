@@ -1,6 +1,8 @@
 package com.fitflo.fitflo;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -31,11 +33,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.jar.JarException;
 
+import static android.app.PendingIntent.getActivity;
+
 public class MainActivity extends AppCompatActivity {
     final static String cjsServerIp = "165.123.63.67";
     final static String raulsServerIp = null;
     static RequestQueue requestQueue = null;
-    boolean loggedIn = false;
 
     private ArrayAdapter<String> mSearchResultsAdapter;
     @Override
@@ -55,11 +58,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         requestQueue = Volley.newRequestQueue(this);
-        if(!loggedIn) {
-            Intent intent = new Intent(this,LoginActivity.class);
-            startActivity(intent);
-            loggedIn = true;
-        }
+
 
         //adpater is how a view keeps in sync with datastructure
         mSearchResultsAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,new ArrayList<String>());
@@ -77,18 +76,27 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-               /* //add a key value to intent, way to pass messages
-                //EXTRA_MESSAGE is static string at top of file
-                intent.putExtra(EXTRA_MESSAGE, message);
-                if(message.equals("")) {
-                    intent.putExtra(EXTRA_MESSAGE, msg);
-                }*/
+ 
                 //start the activity, using the intent
                 startActivity(intent);
             }
         });
 
 
+    }
+
+    @Override
+    public void onResume() {
+
+        SharedPreferences sharedPref = this.getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        boolean loggedIn = sharedPref.getBoolean(getString(R.string.logged_in_key), false);
+        Log.d("MainActivity.onResume","logged in is " + loggedIn);
+        if(!loggedIn) {
+            Intent intent = new Intent(this,LoginActivity.class);
+            startActivity(intent);
+        }
+        super.onResume();
     }
 
     @Override
@@ -106,12 +114,25 @@ public class MainActivity extends AppCompatActivity {
 
 
         switch(item.getItemId()) {
-            case R.id.action_settings:
+            case R.id.action_settings: {
                 return true;
-            case R.id.create_event:
-                Intent intent = new Intent(this,CreateEventActivity.class);
+            }
+            case R.id.create_event: {
+                Intent intent = new Intent(this, CreateEventActivity.class);
                 startActivity(intent);
                 return true;
+            }
+            case R.id.logout: {
+                SharedPreferences sharedPref = this.getSharedPreferences(
+                        getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putBoolean(getString(R.string.logged_in_key), false);
+                editor.commit();
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                return true;
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -133,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
         },new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                textView.setText("sorry, error!"+error);
+                textView.setText("sorry, error!" + error);
             }
         });
         requestQueue.add(request);
@@ -183,5 +204,8 @@ public class MainActivity extends AppCompatActivity {
 
         requestQueue.add(request);
     }
+
+
+
 
 }

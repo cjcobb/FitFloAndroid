@@ -7,4 +7,6 @@
     <string name="title_activity_event_details">EventDetailsActivity</string>
     <string name="title_activity_create_event">CreateEventActivity</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="preference_file_key">FitFloPreferenceFile</string>
+    <string name="logged_in_key">LoggedIn</string>
 </resources>

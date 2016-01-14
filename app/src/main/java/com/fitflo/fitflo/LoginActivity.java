@@ -1,6 +1,8 @@
 package com.fitflo.fitflo;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -52,7 +54,14 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(JSONObject jObj) {
                 Log.d("sendLogin","got response");
                 if(jObj.optBoolean("valid")) {
-                  finish();
+                    SharedPreferences sharedPref = LoginActivity.this.getSharedPreferences(
+                            getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putBoolean(getString(R.string.logged_in_key), true);
+                    editor.apply();
+
+                    finish();
                 } else {
                   TextView errorResponse = (TextView) findViewById(R.id.errorResponse);
                   errorResponse.setText("error, wrong username and password combination");
