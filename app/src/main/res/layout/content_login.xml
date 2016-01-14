@@ -10,48 +10,46 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.fitflo.fitflo.CreateEventActivity"
-    tools:showIn="@layout/activity_create_event">
+    tools:context="com.fitflo.fitflo.LoginActivity"
+    tools:showIn="@layout/activity_login">
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/title"
-        android:hint="Event Title"
+        android:id="@+id/username"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:hint="Username" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
+        android:inputType="textPassword"
         android:ems="10"
-        android:id="@+id/price"
-        android:hint="Price"
-        android:layout_below="@+id/instructorName"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/instructorName"
-        android:layout_below="@+id/title"
+        android:id="@+id/password"
+        android:layout_below="@+id/username"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:hint="Instructor Name" />
+        android:hint="Password" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Submit"
-        android:id="@+id/submit"
-        android:layout_below="@+id/price"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="sendCreateEventRequest" />
+        android:text="login"
+        android:id="@+id/login"
+        android:onClick="sendLogin" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register"
+        android:id="@+id/register" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/errorResponse"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#ff0101" />
 </LinearLayout>

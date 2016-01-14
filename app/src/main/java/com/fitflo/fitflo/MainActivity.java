@@ -32,9 +32,10 @@ import java.util.ArrayList;
 import java.util.jar.JarException;
 
 public class MainActivity extends AppCompatActivity {
-    final static String cjsServerIp = "192.168.1.26";
+    final static String cjsServerIp = "165.123.63.67";
     final static String raulsServerIp = null;
     static RequestQueue requestQueue = null;
+    boolean loggedIn = false;
 
     private ArrayAdapter<String> mSearchResultsAdapter;
     @Override
@@ -54,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         requestQueue = Volley.newRequestQueue(this);
+        if(!loggedIn) {
+            Intent intent = new Intent(this,LoginActivity.class);
+            startActivity(intent);
+            loggedIn = true;
+        }
 
         //adpater is how a view keeps in sync with datastructure
         mSearchResultsAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,new ArrayList<String>());
