@@ -6,6 +6,7 @@ there was a bug where events were added up to three times. should be fixed, but 
 TODO:
 Login Screen
 - send password securely
+- store whether user is logged in
 Register User Screen
 - send password securely
 Search
