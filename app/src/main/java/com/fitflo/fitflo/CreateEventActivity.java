@@ -17,6 +17,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
+
 public class CreateEventActivity extends AppCompatActivity {
 
     @Override
@@ -42,13 +46,18 @@ public class CreateEventActivity extends AppCompatActivity {
         String title = ((EditText) findViewById(R.id.title)).getText().toString();
         String price = ((EditText) findViewById(R.id.price)).getText().toString();
         String instructorName = ((EditText) findViewById(R.id.instructorName)).getText().toString();
-        String ip = "http://" + MainActivity.cjsServerIp
-                + ":8080/addEvent/"
-                + title + "/"
-                + instructorName + "/"
-                + price;
+        //handrolled urlEncoding. Simply replace spaces. Need to change this
+        String url = ("http://" + MainActivity.cjsServerIp
+                    + ":8080/addEvent/"
+                    + title + "/"
+                    + instructorName + "/"
+                    + price).replaceAll("\\s","%20");
 
-        StringRequest request = new StringRequest(Request.Method.GET,ip,new Response.Listener<String>(){
+
+
+
+
+        StringRequest request = new StringRequest(Request.Method.GET,url,new Response.Listener<String>(){
             @Override
             public void onResponse(String response) {
                 Log.d("sendCreateEventRequest", response);
