@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:text="@string/send_root"
             android:id="@+id/sendRoot"
-            android:onClick="sendRootRequest" />
+            android:onClick="showToast" />
 
         <Button
             android:layout_width="wrap_content"

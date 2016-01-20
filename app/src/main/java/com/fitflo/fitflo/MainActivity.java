@@ -15,9 +15,12 @@ import android.view.View;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         setUpNavDrawer();
+        displaySearchFragment();
 
 
         requestQueue = Volley.newRequestQueue(this);
@@ -102,12 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 switch ((int) id) {
                     //search events
                     case 0: {
-                        displayedFragment = new SearchFragment();
-
-                        FragmentManager fragmentManager = getFragmentManager();
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.mainContent, displayedFragment)
-                                .commit();
+                        displaySearchFragment();
                         mDrawerLayout.closeDrawers();
                         //do nothing
                         return;
@@ -234,7 +233,71 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void sendCreateEventRequest(View view) {
+
+
+        String title = ((EditText) findViewById(R.id.title)).getText().toString();
+        String price = ((EditText) findViewById(R.id.price)).getText().toString();
+        String instructorName = ((EditText) findViewById(R.id.instructorName)).getText().toString();
+        //handrolled urlEncoding. Simply replace spaces. Need to change this
+        String url = ("http://" + MainActivity.cjsServerIp
+                + ":8080/addEvent/"
+                + title + "/"
+                + instructorName + "/"
+                + price).replaceAll("\\s", "%20");
 
 
 
+
+
+
+
+        StringRequest request = new StringRequest(Request.Method.GET,url,new Response.Listener<String>(){
+            @Override
+            public void onResponse(String response) {
+                Log.d("sendCreateEventRequest", response);
+                displayedFragment = new SearchFragment();
+
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.mainContent, displayedFragment)
+                        .commit();
+
+                Toast toast = Toast.makeText(MainActivity.this, "event created", Toast.LENGTH_SHORT);
+                toast.show();
+
+                //do nothing
+                return;
+
+            }
+        },new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("sendCreateEventRequest", "error:" + error.toString());
+
+
+                Toast toast = Toast.makeText(MainActivity.this, "error: event not created. try again", Toast.LENGTH_SHORT);
+                toast.show();
+
+                //do nothing
+                return;
+
+            }
+        });
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                0,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        MainActivity.requestQueue.add(request);
+    }
+
+
+    public void displaySearchFragment() {
+        displayedFragment = new SearchFragment();
+
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.mainContent, displayedFragment)
+                .commit();
+    }
 }
