@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +32,7 @@ import com.android.volley.toolbox.Volley;
 import static android.app.PendingIntent.getActivity;
 
 public class MainActivity extends AppCompatActivity {
-    final static String cjsServerIp = "192.168.1.26";
+    final static String cjsServerIp = "158.130.238.44";
     final static String raulsServerIp = null;
     static RequestQueue requestQueue = null;
 
@@ -125,6 +126,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                     //my events
                     case 2: {
+
+                        Fragment fragment = new MyEventsFragment();
+
+                        FragmentManager fragmentManager = getFragmentManager();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.mainContent, fragment)
+                                .commit();
                         return;
                     }
                     //my account
@@ -300,4 +308,13 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.mainContent, displayedFragment)
                 .commit();
     }
+
+    public void showHostingEvents(View view) {
+        Switch hostingSwitch = (Switch) findViewById(R.id.hostingToggle);
+
+        hostingSwitch.setText("Show Attending");
+
+    }
+
+
 }

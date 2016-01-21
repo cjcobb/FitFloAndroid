@@ -9,48 +9,47 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.fitflo.fitflo.LoginActivity"
-    tools:showIn="@layout/activity_login">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/username"
+        android:id="@+id/title"
+        android:hint="Event Title"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:hint="Username" />
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
+        android:inputType="numberDecimal"
         android:ems="10"
-        android:id="@+id/password"
-        android:layout_below="@+id/username"
+        android:id="@+id/price"
+        android:hint="Price"
+        android:layout_below="@+id/instructorName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/instructorName"
+        android:layout_below="@+id/title"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:hint="Password" />
+        android:hint="Instructor Name" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="login"
-        android:id="@+id/login"
-        android:onClick="sendLogin" />
+        android:text="Submit"
+        android:id="@+id/submit"
+        android:layout_below="@+id/price"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="sendCreateEventRequest" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign Up"
-        android:id="@+id/register"
-        android:onClick="startRegistrationActivity" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/errorResponse"
-        android:layout_gravity="center_horizontal"
-        android:textColor="#ff0101" />
 </LinearLayout>
