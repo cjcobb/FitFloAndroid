@@ -53,4 +53,9 @@
         android:id="@+id/errorResponse"
         android:layout_gravity="center_horizontal"
         android:textColor="#ff0101" />
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="signIn" />
 </LinearLayout>

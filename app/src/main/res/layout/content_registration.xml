@@ -53,6 +53,38 @@
         android:id="@+id/displayName"
         android:hint="Display Name" />
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/card_number"
+        android:hint="Card Number" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/exp_month"
+        android:hint="Month" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/exp_year"
+        android:hint="Year" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/cvc"
+        android:hint="CVC (on back)" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -11,6 +11,12 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.fitflo.fitflo.MainActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hi"
+        android:id="@+id/greeting" />
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -22,7 +28,7 @@
             android:layout_height="wrap_content"
             android:text="@string/send_root"
             android:id="@+id/sendRoot"
-            android:onClick="showToast" />
+            android:onClick="sendRootRequest" />
 
         <Button
             android:layout_width="wrap_content"
@@ -30,6 +36,7 @@
             android:text="@string/send_getAllEvents"
             android:id="@+id/sendGetAllEvents"
             android:onClick="sendGetAllEventsRequest" />
+
     </LinearLayout>
 
     <TextView
@@ -43,4 +50,5 @@
         android:layout_height="wrap_content"
         android:id="@+id/searchResultsList"
         android:layout_gravity="center_horizontal" />
+
 </LinearLayout>

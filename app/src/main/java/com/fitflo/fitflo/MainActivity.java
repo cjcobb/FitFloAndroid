@@ -1,11 +1,18 @@
 package com.fitflo.fitflo;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
+import android.Manifest;
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,11 +20,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Switch;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,23 +34,56 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.InputStream;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import static android.app.PendingIntent.getActivity;
 
-public class MainActivity extends AppCompatActivity {
-    final static String cjsServerIp = "158.130.238.44";
+public class MainActivity extends AppCompatActivity
+        implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
+
+    final static String cjsServerIp = "192.168.1.14";
     final static String raulsServerIp = null;
     static RequestQueue requestQueue = null;
-
+    static String mUsername = null;
+    protected static int G_SIGN_IN = 100;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private String mActivityTitle;
+    protected static GoogleApiClient mGoogleApiClient;
+    private ArrayAdapter<FitFloEvent> mSearchResultsAdapter;
+    static FitFloEvent selectedEvent;
 
-    private SearchFragment displayedFragment;
 
-    private ArrayAdapter<String> mSearchResultsAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,15 +91,88 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getPermissions();
+        setupGoogleApiClient();
         setUpNavDrawer();
-        displaySearchFragment();
+        makeSearchResultsView();
+        setGreetingDisplay();
 
+        //total hack to deal with self signed certificates
+        nuke();
 
         requestQueue = Volley.newRequestQueue(this);
+    }
 
+    public void getPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
+                    1);
+        }
+    }
 
+    public void makeSearchResultsView() {
+        //adpater is how a view keeps in sync with datastructure
+        mSearchResultsAdapter = new ArrayAdapter<FitFloEvent>(this,android.R.layout.simple_list_item_1,new ArrayList<FitFloEvent>());
+        ListView listView = (ListView) findViewById(R.id.searchResultsList);
+        listView.setAdapter(mSearchResultsAdapter);
 
+        //listener for list items. bring up event details activity
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, EventDetailsActivity.class);
+                selectedEvent = mSearchResultsAdapter.getItem(position);
+                startActivity(intent);
+            }
+        });
+    }
 
+    /*
+        looks up name of user and displays it in textbox on screen
+     */
+    public void setGreetingDisplay() {
+        TextView textView = (TextView) findViewById(R.id.greeting);
+        mUsername = FileUtils.getString(this,getString(R.string.username));
+        textView.setText("Hi " + mUsername);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("permission","permission granted");
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
     }
 
     @Override
@@ -67,10 +181,11 @@ public class MainActivity extends AppCompatActivity {
         mDrawerToggle.syncState();
     }
 
+
     public void setUpNavDrawer() {
         //adpater is how a view keeps in sync with datastructure
-        String[] osArray = { "Search Events","Create New Event", "My Events", "My Account", "Logout"};
-        ArrayAdapter<String> navDrawerAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,osArray);
+        String[] osArray = {"Search Events", "Create New Event", "My Events", "My Account", "Logout"};
+        ArrayAdapter<String> navDrawerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
         ListView navView = (ListView) findViewById(R.id.navList);
         navView.setAdapter(navDrawerAdapter);
 
@@ -81,15 +196,11 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.string.drawer_open, R.string.drawer_close) {
-
-
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 getSupportActionBar().setTitle("Navigation!");
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
-
-
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
                 getSupportActionBar().setTitle(mActivityTitle);
@@ -107,214 +218,176 @@ public class MainActivity extends AppCompatActivity {
                 switch ((int) id) {
                     //search events
                     case 0: {
-                        displaySearchFragment();
                         mDrawerLayout.closeDrawers();
-                        //do nothing
                         return;
                     }
                     //create event
                     case 1: {
-                        Fragment fragment = new CreateEventFragment();
-
-                        FragmentManager fragmentManager = getFragmentManager();
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.mainContent, fragment)
-                                .commit();
+                        Intent intent = new Intent(MainActivity.this, CreateEventActivity.class);
+                        startActivity(intent);
                         mDrawerLayout.closeDrawers();
-                        //do nothing
                         return;
                     }
                     //my events
                     case 2: {
-
-                        Fragment fragment = new MyEventsFragment();
-
-                        FragmentManager fragmentManager = getFragmentManager();
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.mainContent, fragment)
-                                .commit();
+                        mDrawerLayout.closeDrawers();
+                        Intent intent = new Intent(MainActivity.this, MyEventsActivity.class);
+                        startActivity(intent);
                         return;
                     }
                     //my account
                     case 3: {
+                        mDrawerLayout.closeDrawers();
                         return;
                     }
                     //logout
                     case 4: {
-                        SharedPreferences sharedPref = MainActivity.this.getSharedPreferences(
-                                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putBoolean(getString(R.string.logged_in_key), false);
-                        editor.commit();
+                        FileUtils.writeBoolean(MainActivity.this, getString(R.string.logged_in_key), false);
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(intent);
+                        mDrawerLayout.closeDrawers();
                         return;
                     }
 
                 }
-                Log.d("onItemClickListener", id + "");
             }
         });
     }
-
+    /*
+        This basically checks if the user was logged in. If they're not, show a login screen
+        If the user presses back from login screen, we get here again, which would reshow the screen
+     */
     @Override
     public void onResume() {
 
         SharedPreferences sharedPref = this.getSharedPreferences(
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         boolean loggedIn = sharedPref.getBoolean(getString(R.string.logged_in_key), false);
-        Log.d("MainActivity.onResume", "logged in is " + loggedIn);
-        if(!loggedIn) {
-            Intent intent = new Intent(this,LoginActivity.class);
+
+        if (!loggedIn) {
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
+        } else {
+            mUsername = sharedPref.getString("username", "");
         }
         super.onResume();
     }
 
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
-
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.action_settings: {
                 return true;
             }
-            case R.id.create_event: {
-                Intent intent = new Intent(this, CreateEventActivity.class);
-                startActivity(intent);
-                return true;
-            }
-            case R.id.logout: {
-                SharedPreferences sharedPref = this.getSharedPreferences(
-                        getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putBoolean(getString(R.string.logged_in_key), false);
-                editor.commit();
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
-                return true;
-            }
-
         }
-
         // Activate the navigation drawer toggle
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-    //uses Volley. check out build.gradle (module: app) to compile
-    //also, notice the permission added in AndroidManifest.xml
-    public void sendRootRequest(View view) {
-        final TextView textView = (TextView) findViewById(R.id.rootResponseText);
+    @Override
+    public void onConnected(Bundle bundle) {
 
-        //notice the http:// prefix. necessary
-        String ip = "http://" + cjsServerIp + ":8080";
+    }
+    @Override
+    public void onConnectionSuspended(int i) {
 
-        StringRequest request = new StringRequest(Request.Method.GET,ip,new Response.Listener<String>(){
-            @Override
-            public void onResponse(String response) {
-                textView.setText("Received : " + response);
-            }
-        },new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                textView.setText("sorry, error!" + error);
-            }
-        });
-        requestQueue.add(request);
+    }
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
     }
 
-
-    //for now, this function simply adds an item to the list
-    //however, the commented out code shows how to actually get all events
     public void sendGetAllEventsRequest(View view) {
-        displayedFragment.sendGetAllEventsRequest(view);
 
-    }
+        //TODO: dont hard code this
+        String ip = "https://" + MainActivity.cjsServerIp + ":3000/events/getAllEvents";
 
-    public void sendCreateEventRequest(View view) {
-
-
-        String title = ((EditText) findViewById(R.id.title)).getText().toString();
-        String price = ((EditText) findViewById(R.id.price)).getText().toString();
-        String instructorName = ((EditText) findViewById(R.id.instructorName)).getText().toString();
-        //handrolled urlEncoding. Simply replace spaces. Need to change this
-        String url = ("http://" + MainActivity.cjsServerIp
-                + ":8080/addEvent/"
-                + title + "/"
-                + instructorName + "/"
-                + price).replaceAll("\\s", "%20");
-
-
-
-
-
-
-
-        StringRequest request = new StringRequest(Request.Method.GET,url,new Response.Listener<String>(){
+        JsonArrayRequest request = new JsonArrayRequest(ip,new Response.Listener<JSONArray>() {
             @Override
-            public void onResponse(String response) {
-                Log.d("sendCreateEventRequest", response);
-                displayedFragment = new SearchFragment();
-
-                FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.mainContent, displayedFragment)
-                        .commit();
-
-                Toast toast = Toast.makeText(MainActivity.this, "event created", Toast.LENGTH_SHORT);
-                toast.show();
-
-                //do nothing
-                return;
-
+            public void onResponse(JSONArray response) {
+                mSearchResultsAdapter.clear();
+                for(int i = 0; i < response.length();i++) {
+                    try {
+                        JSONObject jObj = response.getJSONObject(i);
+                        String id = jObj.getString("_id");
+                        String title = jObj.getString("title");
+                        String instructor = jObj.getString("instructor");
+                        double price = jObj.getDouble("price");
+                        mSearchResultsAdapter.add(new FitFloEvent(id,instructor,title,price));
+                    } catch(JSONException exc) {
+                    }
+                }
+                mSearchResultsAdapter.notifyDataSetChanged();
             }
         },new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("sendCreateEventRequest", "error:" + error.toString());
-
-
-                Toast toast = Toast.makeText(MainActivity.this, "error: event not created. try again", Toast.LENGTH_SHORT);
-                toast.show();
-
-                //do nothing
-                return;
+                mSearchResultsAdapter.clear();
+                mSearchResultsAdapter.notifyDataSetChanged();
+                error.printStackTrace();
 
             }
         });
-        request.setRetryPolicy(new DefaultRetryPolicy(
-                0,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
         MainActivity.requestQueue.add(request);
     }
 
+    public static void nuke() {
+        try {
+            TrustManager[] trustAllCerts = new TrustManager[]{
+                    new X509TrustManager() {
+                        public X509Certificate[] getAcceptedIssuers() {
+                            X509Certificate[] myTrustedAnchors = new X509Certificate[0];
+                            return myTrustedAnchors;
+                        }
 
-    public void displaySearchFragment() {
-        displayedFragment = new SearchFragment();
+                        @Override
+                        public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                        }
 
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.mainContent, displayedFragment)
-                .commit();
+                        @Override
+                        public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                        }
+                    }
+            };
+
+            SSLContext sc = SSLContext.getInstance("SSL");
+            sc.init(null, trustAllCerts, new SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+            HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+                @Override
+                public boolean verify(String arg0, SSLSession arg1) {
+                    return true;
+                }
+            });
+        } catch (Exception e) {
+        }
     }
 
-    public void showHostingEvents(View view) {
-        Switch hostingSwitch = (Switch) findViewById(R.id.hostingToggle);
 
-        hostingSwitch.setText("Show Attending");
-
+    public void setupGoogleApiClient() {
+        // Create an instance of GoogleAPIClient.
+        if (mGoogleApiClient == null) {
+            // Configure sign-in to request the user's ID, email address, and basic
+// profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .build();
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .enableAutoManage(this,this)
+                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                    .build();
+        }
     }
+
+
 
 
 }

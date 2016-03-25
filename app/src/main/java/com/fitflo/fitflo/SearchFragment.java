@@ -1,8 +1,10 @@
 package com.fitflo.fitflo;
 
-import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -64,21 +67,24 @@ public class SearchFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        TextView textView = (TextView) getView().findViewById(R.id.greeting);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        textView.setText("Hi " + FileUtils.getString(getContext(),getString(R.string.username)));
         super.onViewCreated(view, savedInstanceState);
     }
 
 
 
-    //for now, this function simply adds an item to the list
-    //however, the commented out code shows how to actually get all events
+
     public void sendGetAllEventsRequest(View view) {
         Log.d("hey", "got inside");
-       /* mSearchResultsAdapter.add("clicked");
-        mSearchResultsAdapter.notifyDataSetChanged();*/
 
 
-        //notice the http:// prefix. necessary
-        String ip = "http://" + MainActivity.cjsServerIp + ":8080/getAllEvents";
+
+        //notice the https:// prefix. necessary
+        String ip = "https://" + MainActivity.cjsServerIp + ":3000/events/getAllEvents";
 
         JsonArrayRequest request = new JsonArrayRequest(ip,new Response.Listener<JSONArray>() {
             @Override
@@ -90,7 +96,9 @@ public class SearchFragment extends Fragment {
                         String title = jObj.getString("title");
                         String instructor = jObj.getString("instructor");
                         double price = jObj.getDouble("price");
-                        mSearchResultsAdapter.add(title + ", " + instructor + ", " + price + " dollars");
+                        String id = jObj.getString("_id");
+
+                        mSearchResultsAdapter.add(id + "," + title + ", " + instructor + ", " + price + " dollars");
                     } catch(JSONException exc) {
                         mSearchResultsAdapter.add("error");
                     }
@@ -106,6 +114,7 @@ public class SearchFragment extends Fragment {
                 mSearchResultsAdapter.clear();
                 mSearchResultsAdapter.add(error.toString());
                 mSearchResultsAdapter.notifyDataSetChanged();
+                error.printStackTrace();
 
             }
         });

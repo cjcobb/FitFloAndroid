@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_id": "fitflo-9982d",
+    "project_number": "980919416556",
+    "name": "FitFlo"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:980919416556:android:b955f92fd7338e0b",
+        "client_id": "android:com.fitflo.fitflo",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.fitflo.fitflo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "980919416556-tql3h1r8hbpu7gtfvn5ouevclpts5d02.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fitflo.fitflo",
+            "certificate_hash": "D394B6B9A3D544405561E29738D2070177F68F8B"
+          }
+        },
+        {
+          "client_id": "980919416556-94vlvc8job9ccespqed1bl2jjpts298j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}
