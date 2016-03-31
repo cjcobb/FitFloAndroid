@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity
         nuke();
 
         requestQueue = Volley.newRequestQueue(this);
+
     }
 
     public void getPermissions() {
@@ -218,6 +219,8 @@ public class MainActivity extends AppCompatActivity
                 switch ((int) id) {
                     //search events
                     case 0: {
+                        Intent intent = new Intent(MainActivity.this, AdvancedSearchActivity.class);
+                        startActivity(intent);
                         mDrawerLayout.closeDrawers();
                         return;
                     }

@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.fitflo.fitflo.CreateEventActivity"
-    tools:showIn="@layout/activity_create_event">
+    tools:context="com.fitflo.fitflo.AdvancedSearchActivity"
+    tools:showIn="@layout/activity_advanced_search">
 
     <EditText
         android:layout_width="wrap_content"
@@ -29,14 +29,43 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="numberDecimal"
-        android:id="@+id/price"
-        android:hint="Price"
-        android:layout_below="@+id/instructorName"
+        android:id="@+id/maxPrice"
+        android:hint="Max Price"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:textSize="24dp"
         android:editable="true"
         android:background="@null"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:id="@+id/ageRange"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="24dp"
+        android:text="Ages" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:id="@+id/editText"
+            android:hint="Youngest" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:id="@+id/editText2"
+            android:hint="Oldest" />
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
@@ -60,13 +89,36 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:textSize="24dp"
-        android:text="Test Text" />
+        android:text="Date" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Times:"
+        android:id="@+id/textView11" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Starts by"
+            android:id="@+id/textView2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ends by"
+            android:id="@+id/textView10" />
+
+    </LinearLayout>
 
     <fragment
         android:id="@+id/mapFrag"
         class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-
 </LinearLayout>

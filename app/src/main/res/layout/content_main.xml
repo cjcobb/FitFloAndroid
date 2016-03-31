@@ -23,20 +23,11 @@ tools:showIn="@layout/activity_main">
         android:text="Hi"
         android:id="@+id/greeting" />
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
+    <SearchView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/send_getAllEvents"
-            android:id="@+id/sendGetAllEvents"
-            android:onClick="sendGetAllEventsRequest" />
-
-    </LinearLayout>
+        android:id="@+id/searchView"
+        android:queryHint="Search by coach name or skill area" />
 
 
     <ListView

@@ -9,8 +9,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -21,12 +24,15 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 public class CreateEventActivity extends AppCompatActivity {
     MapCallback mMapCallback;
     public final int SELECT_SKILLS_ACTIVITY = 1;
+    public final int SELECT_DATE_ACTIVITY = 2;
     public Set<String> skills;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +46,24 @@ public class CreateEventActivity extends AppCompatActivity {
                 mapFrag.getMapAsync(mMapCallback);
         skills = new HashSet<>();
 
+        String pattern = "EEE, MMM dd, yyyy";
+        String formattedDate  = new SimpleDateFormat(pattern).format(new Date());
+        TextView dateTextField = (TextView) findViewById(R.id.date);
+        dateTextField.setText(formattedDate);
+
     }
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getSupportActionBar().setTitle("Create a new event");
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.create_event_menu,menu);
+        return true;
+    }
+
+    public void onSelectDate(View view) {
+        startActivityForResult(new Intent(CreateEventActivity.this,DateSelectActivity.class),SELECT_DATE_ACTIVITY);
+
+    }
 
 
     @Override

@@ -64,6 +64,22 @@
         <activity
             android:name=".SelectSkillsActivity"
             android:label="@string/title_activity_select_skills"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".InstructorRegistrationActivity"
+            android:label="@string/title_activity_instructor_registration"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DateSelectActivity"
+            android:label="@string/title_activity_date_select"
+            android:theme="@style/AppTheme.PopUpTheme" />
+        <activity
+            android:name=".AdvancedSearchActivity"
+            android:label="@string/title_activity_advanced_search"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CoachesProfile"
+            android:label="@string/title_activity_coaches_profile"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
