@@ -19,6 +19,7 @@ public class FileUtils {
         editor.apply();
     }
 
+
     public static void writeBoolean(Context context, String key, boolean val) {
         SharedPreferences sharedPref = context.getSharedPreferences(
                 "FitFloPreferenceFile", Context.MODE_PRIVATE);

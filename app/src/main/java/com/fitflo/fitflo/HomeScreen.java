@@ -1,7 +1,6 @@
 package com.fitflo.fitflo;
 
 import android.Manifest;
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,9 +8,6 @@ import android.content.pm.PackageManager;
 
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -20,39 +16,27 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.SupportMapFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.InputStream;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -66,7 +50,7 @@ import javax.net.ssl.X509TrustManager;
 
 import static android.app.PendingIntent.getActivity;
 
-public class MainActivity extends AppCompatActivity
+public class HomeScreen extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
@@ -123,7 +107,7 @@ public class MainActivity extends AppCompatActivity
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, EventDetailsActivity.class);
+                Intent intent = new Intent(HomeScreen.this, EventDetails.class);
                 selectedEvent = mSearchResultsAdapter.getItem(position);
                 startActivity(intent);
             }
@@ -185,7 +169,7 @@ public class MainActivity extends AppCompatActivity
 
     public void setUpNavDrawer() {
         //adpater is how a view keeps in sync with datastructure
-        String[] osArray = {"Search Events", "Create New Event", "My Events", "My Account", "Logout"};
+        String[] osArray = {"Search Events", "Create New Event", "My Events", "My Profile", "Coaches Profile", "Messages","Logout"};
         ArrayAdapter<String> navDrawerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
         ListView navView = (ListView) findViewById(R.id.navList);
         navView.setAdapter(navDrawerAdapter);
@@ -219,14 +203,14 @@ public class MainActivity extends AppCompatActivity
                 switch ((int) id) {
                     //search events
                     case 0: {
-                        Intent intent = new Intent(MainActivity.this, AdvancedSearchActivity.class);
+                        Intent intent = new Intent(HomeScreen.this, AdvancedSearchActivity.class);
                         startActivity(intent);
                         mDrawerLayout.closeDrawers();
                         return;
                     }
                     //create event
                     case 1: {
-                        Intent intent = new Intent(MainActivity.this, CreateEventActivity.class);
+                        Intent intent = new Intent(HomeScreen.this, CreateEvent.class);
                         startActivity(intent);
                         mDrawerLayout.closeDrawers();
                         return;
@@ -234,22 +218,29 @@ public class MainActivity extends AppCompatActivity
                     //my events
                     case 2: {
                         mDrawerLayout.closeDrawers();
-                        Intent intent = new Intent(MainActivity.this, MyEventsActivity.class);
+                        Intent intent = new Intent(HomeScreen.this, MyEventsActivity.class);
                         startActivity(intent);
                         return;
                     }
-                    //my account
+                    //My Profile
                     case 3: {
+                        Intent intent = new Intent(HomeScreen.this, UserProfile.class);
+                        startActivity(intent);
                         mDrawerLayout.closeDrawers();
                         return;
+                    }
+                    // Coach's profile
+                    case 4: {
+                        mDrawerLayout.closeDrawers();
+                        Intent intent = new Intent(HomeScreen.this, CoachesProfile.class);
+                        startActivity(intent);
                     }
                     //logout
-                    case 4: {
-                        FileUtils.writeBoolean(MainActivity.this, getString(R.string.logged_in_key), false);
-                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                        startActivity(intent);
+                    case 5: {
+                        FileUtils.writeBoolean(HomeScreen.this, getString(R.string.logged_in_key), false);
+                        Intent intent = new Intent(HomeScreen.this,LoginActivity.class);
                         mDrawerLayout.closeDrawers();
-                        return;
+                        startActivity(intent);
                     }
 
                 }
@@ -307,7 +298,7 @@ public class MainActivity extends AppCompatActivity
     public void sendGetAllEventsRequest(View view) {
 
         //TODO: dont hard code this
-        String ip = "https://" + MainActivity.cjsServerIp + ":3000/events/getAllEvents";
+        String ip = "https://" + HomeScreen.cjsServerIp + ":3000/events/getAllEvents";
 
         JsonArrayRequest request = new JsonArrayRequest(ip,new Response.Listener<JSONArray>() {
             @Override
@@ -336,7 +327,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        MainActivity.requestQueue.add(request);
+        HomeScreen.requestQueue.add(request);
     }
 
     public static void nuke() {

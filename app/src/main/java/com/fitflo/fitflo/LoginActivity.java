@@ -1,11 +1,7 @@
 package com.fitflo.fitflo;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -18,15 +14,11 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
 import org.json.JSONObject;
-
-import java.io.File;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -52,14 +44,14 @@ public class LoginActivity extends AppCompatActivity {
         Toast toast = Toast.makeText(this,"sign in clicked",Toast.LENGTH_SHORT);
         toast.show();
         Log.d("GoogleSignIn", "in click listener");
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(MainActivity.mGoogleApiClient);
-        startActivityForResult(signInIntent, MainActivity.G_SIGN_IN);
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(HomeScreen.mGoogleApiClient);
+        startActivityForResult(signInIntent, HomeScreen.G_SIGN_IN);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == MainActivity.G_SIGN_IN) {
+        if(requestCode == HomeScreen.G_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
         }
@@ -94,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
         final String username = ((EditText) findViewById(R.id.username)).getText().toString();
 
         String password = ((EditText) findViewById(R.id.password)).getText().toString();
-        String url = "https://" + MainActivity.cjsServerIp + ":3000/auth/login/"+username+"/"+password;
+        String url = "https://" + HomeScreen.cjsServerIp + ":3000/auth/login/"+username+"/"+password;
 
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url,null,new Response.Listener<JSONObject>() {
@@ -122,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        MainActivity.requestQueue.add(request);
+        HomeScreen.requestQueue.add(request);
     }
 
 }

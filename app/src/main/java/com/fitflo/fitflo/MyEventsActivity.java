@@ -1,13 +1,8 @@
 package com.fitflo.fitflo;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -40,7 +35,7 @@ public class MyEventsActivity extends AppCompatActivity {
     public void sendGetMyEventsRequest() {
 
         //TODO: dont hard code this
-        String ip = "https://" + MainActivity.cjsServerIp + ":3000/users/getUserEvents/"+MainActivity.mUsername;
+        String ip = "https://" + HomeScreen.cjsServerIp + ":3000/users/getUserEvents/"+ HomeScreen.mUsername;
 
         JsonArrayRequest request = new JsonArrayRequest(ip,new Response.Listener<JSONArray>() {
             @Override
@@ -69,7 +64,7 @@ public class MyEventsActivity extends AppCompatActivity {
             }
         });
 
-        MainActivity.requestQueue.add(request);
+        HomeScreen.requestQueue.add(request);
     }
 
     public void makeEventsView() {
@@ -82,7 +77,7 @@ public class MyEventsActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MyEventsActivity.this, EventDetailsActivity.class);
+                Intent intent = new Intent(MyEventsActivity.this, EventDetails.class);
                 startActivity(intent);
             }
         });

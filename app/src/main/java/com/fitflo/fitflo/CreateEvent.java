@@ -3,9 +3,6 @@ package com.fitflo.fitflo;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -29,7 +26,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CreateEventActivity extends AppCompatActivity {
+public class CreateEvent extends AppCompatActivity {
     MapCallback mMapCallback;
     public final int SELECT_SKILLS_ACTIVITY = 1;
     public final int SELECT_DATE_ACTIVITY = 2;
@@ -41,7 +38,7 @@ public class CreateEventActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mMapCallback = new MapCallback(MainActivity.mGoogleApiClient);
+        mMapCallback = new MapCallback(HomeScreen.mGoogleApiClient);
         SupportMapFragment mapFrag = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFrag));
                 mapFrag.getMapAsync(mMapCallback);
         skills = new HashSet<>();
@@ -61,7 +58,7 @@ public class CreateEventActivity extends AppCompatActivity {
     }
 
     public void onSelectDate(View view) {
-        startActivityForResult(new Intent(CreateEventActivity.this,DateSelectActivity.class),SELECT_DATE_ACTIVITY);
+        startActivityForResult(new Intent(CreateEvent.this,DateSelectActivity.class),SELECT_DATE_ACTIVITY);
 
     }
 
@@ -82,7 +79,7 @@ public class CreateEventActivity extends AppCompatActivity {
     }
 
     public void onSelectSkills(View view) {
-        Intent intent = new Intent(CreateEventActivity.this, SelectSkillsActivity.class);
+        Intent intent = new Intent(CreateEvent.this, SelectSkillsActivity.class);
         startActivityForResult(intent,SELECT_SKILLS_ACTIVITY);
     }
 
@@ -98,7 +95,7 @@ public class CreateEventActivity extends AppCompatActivity {
         String instructorName = ((EditText) findViewById(R.id.instructorName)).getText().toString();
         LatLng pos = mMapCallback.curMarker.getPosition();
         //TODO: handrolled urlEncoding. Simply replace spaces. Need to change this
-        String url = ("https://" + MainActivity.cjsServerIp
+        String url = ("https://" + HomeScreen.cjsServerIp
                 + ":3000/events/addEvent/"
                 + title + "/"
                 + instructorName + "/"
@@ -111,7 +108,7 @@ public class CreateEventActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 Log.d("sendCreateEventRequest", response);
-                Toast toast = Toast.makeText(CreateEventActivity.this, "event created", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(CreateEvent.this, "event created", Toast.LENGTH_SHORT);
                 toast.show();
                 finish();
             }
@@ -119,7 +116,7 @@ public class CreateEventActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("sendCreateEventRequest", "error:" + error.toString());
-                Toast toast = Toast.makeText(CreateEventActivity.this, "error: event not created. try again", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(CreateEvent.this, "error: event not created. try again", Toast.LENGTH_SHORT);
                 toast.show();
             }
         });
@@ -127,7 +124,7 @@ public class CreateEventActivity extends AppCompatActivity {
                 0,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        MainActivity.requestQueue.add(request);
+        HomeScreen.requestQueue.add(request);
     }
 
 }

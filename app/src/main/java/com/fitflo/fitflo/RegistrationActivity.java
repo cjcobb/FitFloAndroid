@@ -1,16 +1,11 @@
 package com.fitflo.fitflo;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -63,7 +58,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         String displayName = ((EditText) findViewById(R.id.displayName)).getText().toString();
 
-        String url = "https://" + MainActivity.cjsServerIp + ":8080/addUser/"+username+"/"+password+"/"+displayName;
+        String url = "https://" + HomeScreen.cjsServerIp + ":8080/addUser/"+username+"/"+password+"/"+displayName;
 
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url,null,new Response.Listener<JSONObject>() {
@@ -98,7 +93,7 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
 
-        MainActivity.requestQueue.add(request);
+        HomeScreen.requestQueue.add(request);
 
     }
 
