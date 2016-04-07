@@ -49,7 +49,10 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import static android.app.PendingIntent.getActivity;
-
+/*
+home screen which shows popular instructors and new instructors in area
+allows for quick search
+ */
 public class HomeScreen extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
@@ -203,7 +206,7 @@ public class HomeScreen extends AppCompatActivity
                 switch ((int) id) {
                     //search events
                     case 0: {
-                        Intent intent = new Intent(HomeScreen.this, AdvancedSearchActivity.class);
+                        Intent intent = new Intent(HomeScreen.this, AdvancedSearch.class);
                         startActivity(intent);
                         mDrawerLayout.closeDrawers();
                         return;
@@ -218,7 +221,7 @@ public class HomeScreen extends AppCompatActivity
                     //my events
                     case 2: {
                         mDrawerLayout.closeDrawers();
-                        Intent intent = new Intent(HomeScreen.this, MyEventsActivity.class);
+                        Intent intent = new Intent(HomeScreen.this, MyEvents.class);
                         startActivity(intent);
                         return;
                     }
@@ -232,13 +235,13 @@ public class HomeScreen extends AppCompatActivity
                     // Coach's profile
                     case 4: {
                         mDrawerLayout.closeDrawers();
-                        Intent intent = new Intent(HomeScreen.this, CoachesProfile.class);
+                        Intent intent = new Intent(HomeScreen.this, CoachProfile.class);
                         startActivity(intent);
                     }
                     //logout
                     case 5: {
                         FileUtils.writeBoolean(HomeScreen.this, getString(R.string.logged_in_key), false);
-                        Intent intent = new Intent(HomeScreen.this,LoginActivity.class);
+                        Intent intent = new Intent(HomeScreen.this,Login.class);
                         mDrawerLayout.closeDrawers();
                         startActivity(intent);
                     }
@@ -259,7 +262,7 @@ public class HomeScreen extends AppCompatActivity
         boolean loggedIn = sharedPref.getBoolean(getString(R.string.logged_in_key), false);
 
         if (!loggedIn) {
-            Intent intent = new Intent(this, LoginActivity.class);
+            Intent intent = new Intent(this, Login.class);
             startActivity(intent);
         } else {
             mUsername = sharedPref.getString("username", "");

@@ -15,7 +15,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
 
-public class RegistrationActivity extends AppCompatActivity {
+public class Registration extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,19 +68,19 @@ public class RegistrationActivity extends AppCompatActivity {
                 Log.d("registerUser","got response");
                 //this is the duplicate key error code
                 if(code == 11000) {
-                    Toast toast = Toast.makeText(RegistrationActivity.this, "error: username already exists", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(Registration.this, "error: username already exists", Toast.LENGTH_SHORT);
                     toast.show();
                 } else if(code == 0){
 
-                    Toast toast = Toast.makeText(RegistrationActivity.this, "account created", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(Registration.this, "account created", Toast.LENGTH_SHORT);
                     toast.show();
-                    FileUtils.writeString(RegistrationActivity.this,"cardNumber",cardNumber);
-                    FileUtils.writeString(RegistrationActivity.this,"expMonth",Integer.toString(expMonth));
-                    FileUtils.writeString(RegistrationActivity.this,"expYear",Integer.toString(expYear));
-                    FileUtils.writeString(RegistrationActivity.this, "cvc", cvc);
+                    FileUtils.writeString(Registration.this,"cardNumber",cardNumber);
+                    FileUtils.writeString(Registration.this,"expMonth",Integer.toString(expMonth));
+                    FileUtils.writeString(Registration.this,"expYear",Integer.toString(expYear));
+                    FileUtils.writeString(Registration.this, "cvc", cvc);
                     finish();
                 } else {
-                    Toast toast = Toast.makeText(RegistrationActivity.this, "unknown error:" + jObj.optString("errmsg"), Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(Registration.this, "unknown error:" + jObj.optString("errmsg"), Toast.LENGTH_SHORT);
                     toast.show();
                 }
 
@@ -88,7 +88,7 @@ public class RegistrationActivity extends AppCompatActivity {
         },new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast toast = Toast.makeText(RegistrationActivity.this, "error:" + error.toString(), Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(Registration.this, "error:" + error.toString(), Toast.LENGTH_SHORT);
                 toast.show();
             }
         });

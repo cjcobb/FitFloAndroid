@@ -7,6 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+/*
+screen to update your own user profile
+ */
 public class UserProfile extends AppCompatActivity {
 
     @Override

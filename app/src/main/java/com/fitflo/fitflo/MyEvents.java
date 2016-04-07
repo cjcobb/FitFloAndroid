@@ -15,8 +15,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-public class MyEventsActivity extends AppCompatActivity {
+/*
+screen to list all events. instructors also see events they are hosting
+ */
+public class MyEvents extends AppCompatActivity {
 
 
     ArrayAdapter<FitFloEvent> mEventsAdapter;
@@ -77,7 +79,7 @@ public class MyEventsActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MyEventsActivity.this, EventDetails.class);
+                Intent intent = new Intent(MyEvents.this, EventDetails.class);
                 startActivity(intent);
             }
         });

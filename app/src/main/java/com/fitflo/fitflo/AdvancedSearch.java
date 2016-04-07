@@ -9,7 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 
-public class AdvancedSearchActivity extends AppCompatActivity {
+public class AdvancedSearch extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

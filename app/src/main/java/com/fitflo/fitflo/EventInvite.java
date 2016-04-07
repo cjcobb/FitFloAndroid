@@ -3,6 +3,9 @@ package com.fitflo.fitflo;
 import android.os.Bundle;
 import android.app.Activity;
 
+/*
+invite user sees after instructor creates event
+ */
 public class EventInvite extends Activity {
 
     @Override

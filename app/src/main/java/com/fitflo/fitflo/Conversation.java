@@ -2,8 +2,10 @@ package com.fitflo.fitflo;
 
 import android.os.Bundle;
 import android.app.Activity;
-
-public class MessageView extends Activity {
+/*
+screen for a viewing message threads
+ */
+public class Conversation extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

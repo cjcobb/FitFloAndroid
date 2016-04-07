@@ -34,11 +34,11 @@
             android:label="@string/title_activity_event_details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".Login"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".RegistrationActivity"
+            android:name=".Registration"
             android:label="@string/title_activity_registration"
             android:theme="@style/AppTheme.NoActionBar" />
         <!--
@@ -58,7 +58,7 @@
             android:label="@string/title_activity_create_event"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MyEventsActivity"
+            android:name=".MyEvents"
             android:label="@string/title_activity_my_events"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -70,11 +70,11 @@
             android:label="@string/title_activity_date_select"
             android:theme="@style/AppTheme.PopUpTheme" />
         <activity
-            android:name=".AdvancedSearchActivity"
+            android:name=".AdvancedSearch"
             android:label="@string/title_activity_advanced_search"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".CoachesProfile"
+            android:name=".CoachProfile"
             android:label="@string/title_activity_coaches_profile"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -85,7 +85,7 @@
             android:name=".Inbox"
             android:label="@string/title_activity_inbox" />
         <activity
-            android:name=".MessageView"
+            android:name=".Conversation"
             android:label="@string/title_activity_message_view" />
         <activity
             android:name=".EventInvite"

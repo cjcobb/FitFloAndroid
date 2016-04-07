@@ -20,7 +20,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
 import org.json.JSONObject;
 
-public class LoginActivity extends AppCompatActivity {
+public class Login extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void startRegistrationActivity(View view) {
-        Intent intent = new Intent(this,RegistrationActivity.class);
+        Intent intent = new Intent(this,Registration.class);
         startActivity(intent);
     }
 
@@ -97,8 +97,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-                    FileUtils.writeBoolean(LoginActivity.this, getString(R.string.logged_in_key), true);
-                    FileUtils.writeString(LoginActivity.this,getString(R.string.username),username);
+                    FileUtils.writeBoolean(Login.this, getString(R.string.logged_in_key), true);
+                    FileUtils.writeString(Login.this,getString(R.string.username),username);
 
                     finish();
                 } else {

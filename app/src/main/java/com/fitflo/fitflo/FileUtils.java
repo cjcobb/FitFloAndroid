@@ -7,6 +7,7 @@ import static android.provider.Settings.Global.getString;
 
 /**
  * Created by cj on 2/4/16.
+ * used to read and write from files
  */
 public class FileUtils {
 

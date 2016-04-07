@@ -13,7 +13,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
-
+/*
+screen to see details regarding an event, and unregister for event if neccessary
+ */
 public class EventDetails extends AppCompatActivity {
 
     @Override

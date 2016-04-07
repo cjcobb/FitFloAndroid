@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.fitflo.fitflo.MyEventsActivity"
+    tools:context=".MyEvents"
     tools:showIn="@layout/activity_my_events">
 
     <RadioGroup
@@ -21,14 +21,16 @@
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New RadioButton"
-            android:id="@+id/radioButton" />
+            android:text="Attending"
+            android:id="@+id/radioButton"
+            android:checked="false" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New RadioButton"
-            android:id="@+id/radioButton2" />
+            android:text="Hosting"
+            android:id="@+id/radioButton2"
+            android:checked="false" />
     </RadioGroup>
 
     <ListView

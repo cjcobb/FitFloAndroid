@@ -8,6 +8,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.View;
 
+/*
+utility activity to select a date
+ */
 public class DateSelectActivity extends AppCompatActivity {
 
     @Override

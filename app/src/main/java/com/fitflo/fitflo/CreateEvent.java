@@ -26,6 +26,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+/*
+screen to create an event, which sends an invite to user
+ */
 public class CreateEvent extends AppCompatActivity {
     MapCallback mMapCallback;
     public final int SELECT_SKILLS_ACTIVITY = 1;

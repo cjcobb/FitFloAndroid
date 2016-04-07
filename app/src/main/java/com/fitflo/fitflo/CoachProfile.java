@@ -18,7 +18,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-public class CoachesProfile extends AppCompatActivity {
+
+/*
+Screen to create or update coach's profile
+ */
+public class CoachProfile extends AppCompatActivity {
     public final int IMAGE_CHOOSER = 101;
     public final String isCoachKey = "isCoach";
     public final String createProfileText = "Create Coach's Profile";

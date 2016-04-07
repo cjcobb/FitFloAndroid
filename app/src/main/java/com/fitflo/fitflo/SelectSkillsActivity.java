@@ -10,7 +10,9 @@ import android.view.View;
 import android.widget.CheckBox;
 
 import java.util.ArrayList;
-
+/*
+utility activity to select skills
+ */
 public class SelectSkillsActivity extends AppCompatActivity {
 
     @Override
