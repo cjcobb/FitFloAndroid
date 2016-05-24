@@ -5,6 +5,7 @@ import android.app.Activity;
 
 /*
 invite user sees after instructor creates event
+can accept or decline
  */
 public class EventInvite extends Activity {
 

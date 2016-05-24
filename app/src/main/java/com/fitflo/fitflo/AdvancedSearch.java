@@ -9,6 +9,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 
+
+/*
+This activity is meant to be a screen where users can
+create a more complex search query, such as searching only by
+instructor name or changing the radius, or giving a price range,
+etc.
+ */
 public class AdvancedSearch extends AppCompatActivity {
 
     @Override

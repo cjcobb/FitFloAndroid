@@ -52,6 +52,8 @@ import static android.app.PendingIntent.getActivity;
 /*
 home screen which shows popular instructors and new instructors in area
 allows for quick search
+not sure if the interfaces need to be there. they have something to do
+with the google api client
  */
 public class HomeScreen extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks,
@@ -91,6 +93,7 @@ public class HomeScreen extends AppCompatActivity
 
     }
 
+    //just location permissions now
     public void getPermissions() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -100,6 +103,7 @@ public class HomeScreen extends AppCompatActivity
         }
     }
 
+    //sets up the array adapter and on click listener
     public void makeSearchResultsView() {
         //adpater is how a view keeps in sync with datastructure
         mSearchResultsAdapter = new ArrayAdapter<FitFloEvent>(this,android.R.layout.simple_list_item_1,new ArrayList<FitFloEvent>());
@@ -118,7 +122,7 @@ public class HomeScreen extends AppCompatActivity
     }
 
     /*
-        looks up name of user and displays it in textbox on screen
+       looks up name of user and displays it in textbox on screen
      */
     public void setGreetingDisplay() {
         TextView textView = (TextView) findViewById(R.id.greeting);
@@ -126,6 +130,7 @@ public class HomeScreen extends AppCompatActivity
         textView.setText("Hi " + mUsername);
     }
 
+    //pretty sure system calls this function
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -170,8 +175,11 @@ public class HomeScreen extends AppCompatActivity
     }
 
 
+    //this is really important. this is the hamburger menu
+    //right now i just have each item starting an activity
     public void setUpNavDrawer() {
         //adpater is how a view keeps in sync with datastructure
+        //this is the order the items will appear in the list
         String[] osArray = {"Search Events", "Create New Event", "My Events", "My Profile", "Coaches Profile", "Messages","Logout"};
         ArrayAdapter<String> navDrawerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
         ListView navView = (ListView) findViewById(R.id.navList);
@@ -200,6 +208,7 @@ public class HomeScreen extends AppCompatActivity
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         // Drawer Item click listeners
+        //this is annoying, the id is the index into the adapter list
         navView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -285,6 +294,7 @@ public class HomeScreen extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+
     @Override
     public void onConnected(Bundle bundle) {
 
@@ -333,6 +343,7 @@ public class HomeScreen extends AppCompatActivity
         HomeScreen.requestQueue.add(request);
     }
 
+    //hack to deal with self signed certs
     public static void nuke() {
         try {
             TrustManager[] trustAllCerts = new TrustManager[]{

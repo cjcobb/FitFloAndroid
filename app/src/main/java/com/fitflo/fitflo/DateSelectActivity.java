@@ -25,6 +25,7 @@ public class DateSelectActivity extends AppCompatActivity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
+        //makes this activity seem like a pop up
         getWindow().setLayout((int)(width * .8), (int) (height *.6));
 
 

@@ -3,6 +3,7 @@ package com.fitflo.fitflo;
 /**
  * Created by cj on 2/28/16.
  * needs to be updated. no longer dealing with events, dealing with coaches
+ * this was so an individual could search an event
  */
 public class FitFloEvent {
     String eventID;

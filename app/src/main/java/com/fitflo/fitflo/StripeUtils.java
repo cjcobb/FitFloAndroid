@@ -10,13 +10,20 @@ import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
 import com.stripe.exception.AuthenticationException;
 
+
+/*
+simple utility functions for stripe
+ */
 public class StripeUtils {
+    //this is jsut a test api key
     static String apiKey = "pk_test_6pRNASCoBOKtIshFeQd4XMUh";
 
     public static boolean validate(String cardNumber, int expMonth, int expYear, String cvc) {
         Card card = new Card(cardNumber,expMonth,expYear,cvc);
         return card.validateCard();
     }
+
+    //this does not actuall send anything
     public static boolean getTokenAndSendToServer(String cardNumber, int expMonth, int expYear, String cvc) {
         Card card = new Card(cardNumber,expMonth,expYear,cvc);
         if(!card.validateCard()) {
@@ -43,7 +50,5 @@ public class StripeUtils {
         }
         return true;
     }
-    public static void main(String[] args) {
 
-    }
 }

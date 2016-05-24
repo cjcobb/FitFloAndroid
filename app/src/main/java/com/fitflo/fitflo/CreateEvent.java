@@ -62,7 +62,6 @@ public class CreateEvent extends AppCompatActivity {
 
     public void onSelectDate(View view) {
         startActivityForResult(new Intent(CreateEvent.this,DateSelectActivity.class),SELECT_DATE_ACTIVITY);
-
     }
 
 
@@ -93,9 +92,11 @@ public class CreateEvent extends AppCompatActivity {
     public void sendCreateEventRequest() {
 
 
-        String title = ((EditText) findViewById(R.id.title)).getText().toString();
-        String price = ((EditText) findViewById(R.id.price)).getText().toString();
-        String instructorName = ((EditText) findViewById(R.id.instructorName)).getText().toString();
+        //these need to be stored somewhere and retreived here.
+        //they could just be on the screen
+        String title = "";
+        String price = "";
+        String instructorName = "";
         LatLng pos = mMapCallback.curMarker.getPosition();
         //TODO: handrolled urlEncoding. Simply replace spaces. Need to change this
         String url = ("https://" + HomeScreen.cjsServerIp
@@ -107,6 +108,7 @@ public class CreateEvent extends AppCompatActivity {
                 + pos.latitude).replaceAll("\\s", "%20");
 
 
+        //builds the request, and the callback
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -123,10 +125,14 @@ public class CreateEvent extends AppCompatActivity {
                 toast.show();
             }
         });
+        //not sure if this is neccessary.
+        //for some reason i was encountering timeouts here
+        //and this fixed it. that was a while ago tho
         request.setRetryPolicy(new DefaultRetryPolicy(
                 0,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        //sends the request
         HomeScreen.requestQueue.add(request);
     }
 

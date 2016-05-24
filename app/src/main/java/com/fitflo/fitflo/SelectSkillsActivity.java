@@ -12,6 +12,8 @@ import android.widget.CheckBox;
 import java.util.ArrayList;
 /*
 utility activity to select skills
+could use this when an instructor creates a profile, they
+can select skills they specialize in, and users can search those.
  */
 public class SelectSkillsActivity extends AppCompatActivity {
 
@@ -33,6 +35,15 @@ public class SelectSkillsActivity extends AppCompatActivity {
     }
 
 
+    /*
+    all the skills are hardcoded right now
+    i dont think we can have users input their own skills
+    i think we need a predetermined set of skills
+    that users can select
+    we could have an other section that they fill in themselves
+    and then we can see what skills we need to add to
+    the set of standard skills
+     */
     protected void onDestroy() {
         super.onDestroy();
         Intent skillsIntent = new Intent();
@@ -66,6 +77,8 @@ public class SelectSkillsActivity extends AppCompatActivity {
         if(cb.isChecked()) {
             skills.add(cb.getText().toString());
         }
+        //passing back an array of strings that represent
+        //selected skills
         skillsIntent.putExtra("skills",skills.toArray());
         setResult(RESULT_OK,skillsIntent);
     }

@@ -1,17 +1,40 @@
-Initial development of front end
+Project contains a lot of skeleton classes that need to be filled in
+Some classes are decently filled in though, such as HomeScreen or Login
+Layouts are very rudimentary and need to be improved upon
 
-Has functionality to show all events in database, as well as add an event to database
-there was a bug where events were added up to three times. should be fixed, but not totally certain
+I think nearly every screen should have the hamburger menu in the top left
+this is referred to in the code as the nav drawer
+this would make every screen kindve function as the home screen
+where the homescreen is more of the first screen someone sees
 
-TODO:
-Login Screen
-- send password securely
-- store whether user is logged in
-Register User Screen
-- send password securely
-Search
-- not sure how to do this (search based on instructor name and title?)
-Date and Time
-- (mobile) create Event needs good date and time ui
-- (server) remove events from db once date/time passes
-- develop protocol for date/time format
+every user can click on the coaches profile. if they are not a coach,
+it gives them the option to create a coaches profile
+to be a coach, a user should have a picture and bio
+
+im storing a lot of stuff as files.
+such as if the user is logged in
+or their username
+see FileUtils
+
+there are comments at the top of every file
+and some in the file as well
+
+each screen has a layout that starts with activity
+and one that starts with content. the content is where
+most stuff is
+
+google maps is only neccessary if a class is being run
+in a public space that has no address
+otherwise, the instructor should put the exact address
+this is not uber. with uber, a client drops a pin and the driver
+goes near there and then calls to find the exact spot
+instructors arent going to be sitting by their phone
+waiting for clients to call
+theyre going to be setting up for their class
+maybe even starting their class
+
+i think the events should be shown in a list view
+
+
+
+

@@ -20,6 +20,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
 import org.json.JSONObject;
 
+/*
+screen that allows a user to login. TODO: login with fb
+ */
 public class Login extends AppCompatActivity {
 
     @Override
@@ -40,6 +43,7 @@ public class Login extends AppCompatActivity {
 
     }
 
+    //only for sign in with google
     public void signIn(View view) {
         Toast toast = Toast.makeText(this,"sign in clicked",Toast.LENGTH_SHORT);
         toast.show();
@@ -80,6 +84,7 @@ public class Login extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //this is the normal login
     public void sendLogin(View view) {
         Log.d("sendLogin","making request");
 
@@ -94,9 +99,6 @@ public class Login extends AppCompatActivity {
             public void onResponse(JSONObject jObj) {
                 Log.d("sendLogin","got response");
                 if(jObj.optBoolean("valid")) {
-
-
-
                     FileUtils.writeBoolean(Login.this, getString(R.string.logged_in_key), true);
                     FileUtils.writeString(Login.this,getString(R.string.username),username);
 

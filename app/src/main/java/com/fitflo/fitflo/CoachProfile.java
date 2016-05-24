@@ -20,7 +20,8 @@ import java.io.InputStream;
 
 
 /*
-Screen to create or update coach's profile
+When a user has not signed up to be a coach, this screen is a
+create screen. After that, its an update screen.
  */
 public class CoachProfile extends AppCompatActivity {
     public final int IMAGE_CHOOSER = 101;
@@ -53,12 +54,19 @@ public class CoachProfile extends AppCompatActivity {
         }
     }
 
+
+    /*
+    this is how you let a user select a photo from their gallery
+     */
     public void selectImage(View view) {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_CHOOSER);
     }
+    /*
+    this is called once the user selects an image
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -71,6 +79,7 @@ public class CoachProfile extends AppCompatActivity {
                         ImageView imageView = new ImageView(this);
                         Bitmap imageB = BitmapFactory.decodeStream(inputStream);
                         imageView.setImageBitmap(imageB);
+                        //setting the size
                         imageView.setLayoutParams(
                                 new Toolbar.LayoutParams(300,300));
                         mainView.addView(imageView,2);

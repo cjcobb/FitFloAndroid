@@ -3,7 +3,7 @@ package com.fitflo.fitflo;
 import android.os.Bundle;
 import android.app.Activity;
 /*
-screen for a viewing message threads
+screen for a viewing a conversation with one other users
  */
 public class Conversation extends Activity {
 

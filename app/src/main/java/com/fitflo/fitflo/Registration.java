@@ -15,6 +15,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
 
+
+/*
+screen where a new user registers
+ */
 public class Registration extends AppCompatActivity {
 
     @Override
